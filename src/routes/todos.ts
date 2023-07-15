@@ -3,10 +3,16 @@ import { Todo } from '../models/todo'
 
 let todos: Todo[] = [];
 
+type RequestBody = {
+    id: string,
+    text: string
+}
+
 const router = Router();
 
 router.post("/add-todo", (req, res, next) => {
-    const text: string = req.body.text;
+    const body = req.body as RequestBody
+    const text: string = body.text;
     const id = new Date().toISOString();
     todos.push({
         id: id,
@@ -18,7 +24,8 @@ router.post("/add-todo", (req, res, next) => {
 })
 
 router.delete("/delete-todo", (req, res, next) => {
-    const id = req.body.id;
+    const body = req.body as RequestBody
+    const id = body.id;
     const updatedTodos: Todo[] = todos.filter(todo => {
         return todo.id !== id;
     })
@@ -35,8 +42,9 @@ router.delete("/delete-todo", (req, res, next) => {
 })
 
 router.post("/edit-todo", (req, res, next) => {
-    const id = req.body.id;
-    const text = req.body.text;
+    const body = req.body as RequestBody
+    const id = body.id;
+    const text = body.text;
     const todoIndex = todos.findIndex(todo => todo.id === id);
     if (todoIndex >= 0) {
         todos[todoIndex] = { id: todos[todoIndex].id, text: text }

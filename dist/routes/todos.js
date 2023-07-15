@@ -4,7 +4,8 @@ const express_1 = require("express");
 let todos = [];
 const router = (0, express_1.Router)();
 router.post("/add-todo", (req, res, next) => {
-    const text = req.body.text;
+    const body = req.body;
+    const text = body.text;
     const id = new Date().toISOString();
     todos.push({
         id: id,
@@ -15,7 +16,8 @@ router.post("/add-todo", (req, res, next) => {
     });
 });
 router.delete("/delete-todo", (req, res, next) => {
-    const id = req.body.id;
+    const body = req.body;
+    const id = body.id;
     const updatedTodos = todos.filter(todo => {
         return todo.id !== id;
     });
@@ -32,8 +34,9 @@ router.delete("/delete-todo", (req, res, next) => {
     }
 });
 router.post("/edit-todo", (req, res, next) => {
-    const id = req.body.id;
-    const text = req.body.text;
+    const body = req.body;
+    const id = body.id;
+    const text = body.text;
     const todoIndex = todos.findIndex(todo => todo.id === id);
     if (todoIndex >= 0) {
         todos[todoIndex] = { id: todos[todoIndex].id, text: text };
